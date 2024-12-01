@@ -1,57 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Your Page Title</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file (optional) -->
+    <title>Guess the Number!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+        }
+
+        main {
+            background-color: #f1faee;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            color: #1d3557;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #457b9d;
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border: 2px solid #457b9d;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background-color: #457b9d;
+            color: #f1faee;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1d3557;
+        }
+
+        #guessed {
+            color: #e63946;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        #attempts {
+            color: #386641;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <main>
-        <section id="home">
-            <h1>Welcome to My Website</h1>
-            <p>This is the homepage section.</p>
+        <section id="title">
+            <h1>Guess the Number!</h1>
         </section>
 
-        <section id="about">
-            <h2>About Us</h2>
-            <p>Information about your company or project.</p>
+        <section id="introduce">
+            <h2>Welcome to Guess the Number!<br>Try to guess my number, and I will tell you if it’s too high or too low.<br>If you guess it right within 6 tries, you win!<br>Note: The number is always between 1 and 100 (inclusive).</h2>
         </section>
 
-        <section id="services">
-            <h2>Services</h2>
-            <p>Details about the services you offer.</p>
-        </section>
+        <div id="game-controls">
+            <input type="number" id="userGuess" min="1" max="100" placeholder="Enter your guess">
+            <button onclick="madeGuess()">Guess!</button>
+        </div>
 
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form action="#" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
-                <textarea id="message" name="message" placeholder="Your message"></textarea>
-                <button type="submit">Submit</button>
-            </form>
-        </section>
+        <div id="feedback">
+            <div id="guessed"></div>
+            <div id="attempts"></div> <br>
+        </div>
+
+        <button onclick="restart()">RESTART GAME</button>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
-    </footer>
+    <script>
+        let myNumber = Math.floor(Math.random() * 100) + 1;
+        let guessedtf = false;
+        let attemptNumber = 0;
 
+        function madeGuess() {
+            const guess = document.getElementById('userGuess').value;
+            const feedback = document.getElementById('guessed');
+            const guessesLeft = document.getElementById('attempts');
+
+            if (attemptNumber >= 6) {
+                feedback.textContent = "You have no more guesses left. Please click restart.";
+            } else {
+                if (guess < 1 || guess > 100 || isNaN(guess)) {
+                    feedback.textContent = "Please enter a valid number between 1 and 100.";
+                } else if (guess == myNumber) {
+                    feedback.textContent = "Correct!";
+                    guessedtf = true;
+                } else if (guess < myNumber) {
+                    feedback.textContent = "Too low.";
+                } else if (guess > myNumber) {
+                    feedback.textContent = "Too high.";
+                }
+
+                attemptNumber++;
+
+                if (guessedtf) {
+                    guessesLeft.textContent = "YOU WIN!\n";
+                } else {
+                    guessesLeft.textContent = `You have ${6 - attemptNumber} guesses left.\n`;
+                }
+            }
+        }
+
+        function restart() {
+            const feedback = document.getElementById('guessed');
+            const guessesLeft = document.getElementById('attempts');
+
+            myNumber = Math.floor(Math.random() * 100) + 1;
+            guessedtf = false;
+            attemptNumber = 0;
+            feedback.textContent = "";
+            guessesLeft.textContent = "";
+        }
+    </script>
 </body>
+
 </html>
