@@ -17,6 +17,18 @@
             align-items: center;
             background-color: #000;
         }
+
+        #animatedCursor {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            background: url('https://media2.giphy.com/media/Q2diY9tGI7gT06oyV9/giphy.gif?cid=6c09b952fvq84z5eum84lkh9hrdle88giobpodhrmsdch0gm&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=ts') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+
         bkg {
             z-index: 2;
         }
@@ -245,6 +257,7 @@
                 low.<br>If you guess it right within 6 tries, you win!<br>Note: The number is always between 1 and 100
                 (inclusive).</h2>
         </section>
+        <div id="animatedCursor"></div>
 
         <div id="game-controls">
             <input type="number" id="userGuess" min="1" max="100" placeholder="Enter your guess">
@@ -1029,6 +1042,12 @@
     </section>
 
     <script>
+        const cursor = document.getElementById('animatedCursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.top = `${e.clientY}px`;
+            cursor.style.left = `${e.clientX}px`;
+        });
+
         let myNumber = Math.floor(Math.random() * 100) + 1;
         let guessedtf = false;
         let attemptNumber = 0;
